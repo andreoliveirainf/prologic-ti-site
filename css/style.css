@@ -14,7 +14,7 @@
   --line-soft: #182541;
   --paper: #edf1fa;         /* texto primário */
   --muted: #8b96b8;         /* texto secundário */
-  --faint: #5b6690;         /* texto terciário */
+  --faint: #7f8aae;         /* texto terciário (contraste >= 4.5:1 sobre ink/surface) */
   --amber: #f5a623;         /* acento primário — sinalização/status */
   --amber-dim: #c9861c;
   --teal: #5fd4a3;          /* acento secundário — "operacional" */
@@ -491,7 +491,7 @@ img { max-width: 100%; display: block; }
 }
 .pf-link:hover { color: #ffb84a; text-decoration: underline; }
 
-.pf-note {
+.pf-body .pf-note {
   margin: 14px 0 0;
   font-family: var(--font-mono);
   font-size: 0.76rem;
@@ -501,7 +501,7 @@ img { max-width: 100%; display: block; }
 
 .pf-card-real { border-color: rgba(245, 166, 35, 0.35); }
 
-.screens-label {
+.pf-body .screens-label {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   color: var(--faint);
@@ -533,7 +533,7 @@ img { max-width: 100%; display: block; }
 .screen-mini circle.ring { fill: none; stroke: var(--amber-dim); }
 .screen-label {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.68rem;
   color: var(--muted);
   text-align: center;
   text-transform: uppercase;
@@ -654,6 +654,7 @@ img { max-width: 100%; display: block; }
 }
 .footer-inner a { color: var(--faint); text-decoration: none; }
 .footer-inner a:hover { color: var(--muted); }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
 
 /* ============ Reveal animation ============ */
 .reveal {
