@@ -265,18 +265,60 @@ if (feed && !reduceMotion) {
   showProject(0);
 })();
 
-// Contact form -> mailto (no backend required)
+// Formulário de contato: envio via FormSubmit (serviço externo que entrega no e-mail)
+const CONTACT_EMAIL = 'andreoliveirainf@gmail.com';
 const form = document.getElementById('contactForm');
-form.addEventListener('submit', (e) => {
+const formBtn = document.getElementById('formBtn');
+const formStatus = document.getElementById('formStatus');
+
+function setStatus(kind, html) {
+  formStatus.className = `form-status ${kind}`;
+  formStatus.innerHTML = html;
+}
+
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const message = document.getElementById('message').value.trim();
+  const data = new FormData(form);
+  if (data.get('_honey')) return; // robô preencheu o campo-armadilha
 
-  const subject = encodeURIComponent(`Contato pelo site — ${name}`);
-  const body = encodeURIComponent(
-    `Nome: ${name}\nE-mail: ${email}\n\nMensagem:\n${message}`
-  );
+  const name = String(data.get('name') || '').trim();
+  const payload = {
+    name,
+    email: String(data.get('email') || '').trim(),
+    message: String(data.get('message') || '').trim(),
+    _subject: `Contato pelo site ProLogic TI — ${name}`,
+    _template: 'table',
+    _captcha: 'false',
+  };
 
-  window.location.href = `mailto:andreoliveirainf@gmail.com?subject=${subject}&body=${body}`;
+  const label = formBtn.textContent;
+  formBtn.disabled = true;
+  formBtn.textContent = 'Enviando…';
+  setStatus('', '');
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal,
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || String(out.success) !== 'true') throw new Error(out.message || `HTTP ${res.status}`);
+    form.reset();
+    setStatus('ok', 'Mensagem enviada! Retornaremos em breve.');
+  } catch (err) {
+    const subject = encodeURIComponent(`Contato pelo site — ${name}`);
+    const body = encodeURIComponent(`Nome: ${name}\nE-mail: ${payload.email}\n\nMensagem:\n${payload.message}`);
+    setStatus('err',
+      'Não conseguimos enviar agora. Escreva para ' +
+      `<a href="mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}">${CONTACT_EMAIL}</a>` +
+      ' ou chame no <a href="https://wa.me/5537999821666" target="_blank" rel="noopener">WhatsApp</a>.');
+  } finally {
+    clearTimeout(timer);
+    formBtn.disabled = false;
+    formBtn.textContent = label;
+  }
 });

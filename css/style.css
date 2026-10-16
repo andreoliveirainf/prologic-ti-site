@@ -982,3 +982,14 @@ img { max-width: 100%; display: block; }
 .theme-toggle .i-moon { display: none; }
 :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
 :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
+
+/* ---------- Formulário: estados de envio ---------- */
+:root { --danger: #ff9b8a; }
+:root[data-theme="light"] { --danger: #b3261e; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.form-status { margin: 0; font-size: .86rem; line-height: 1.5; }
+.form-status:empty { display: none; }
+.form-status.ok { color: var(--teal); }
+.form-status.err { color: var(--danger); }
+.form-status a { color: inherit; text-decoration: underline; }
+.btn:disabled { opacity: .65; cursor: progress; transform: none; }

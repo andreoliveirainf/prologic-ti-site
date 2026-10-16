@@ -593,8 +593,10 @@ try {
             <label for="message">Mensagem</label>
             <textarea id="message" name="message" rows="4" placeholder="Conte um pouco sobre o seu projeto ou necessidade" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Enviar mensagem</button>
-          <p class="form-note">Ao enviar, seu app de e-mail abrirá com a mensagem pronta para envio.</p>
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary btn-block" id="formBtn">Enviar mensagem</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          <p class="form-note">Sua mensagem chega direto no nosso e-mail. Respondemos o mais rápido possível.</p>
         </form>
       </div>
     </div>
