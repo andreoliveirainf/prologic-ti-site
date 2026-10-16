@@ -20,6 +20,16 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 onScroll();
 
+// Tema claro/escuro (padrão: escuro; escolha fica salva no navegador)
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+}
+
 // Mobile nav toggle
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
